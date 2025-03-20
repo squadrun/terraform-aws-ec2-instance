@@ -166,8 +166,8 @@ resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_info" {
   metric_name         = "disk_used_percent"
   namespace           = "CWAgent"
   period              = "120"
-  statistic           = "Average"
-  threshold           = "85"
+  statistic           = "Maximum"
+  threshold           = "80"
   alarm_description   = "This metric monitors EC2 disk space utilization"
   alarm_actions       = [var.alarm_info_sns_topic_arn]
   unit                = "Percent"
@@ -176,8 +176,6 @@ resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_info" {
       aws_instance.this[0].id,
       aws_instance.ignore_ami[0].id,
     )
-    MountPath  = "/"
-    Filesystem = "ext4"
   }
 }
 
@@ -200,8 +198,6 @@ resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_warning" {
       aws_instance.this[0].id,
       aws_instance.ignore_ami[0].id,
     )
-    MountPath  = "/"
-    Filesystem = "ext4"
   }
 }
 
@@ -214,8 +210,8 @@ resource "aws_cloudwatch_metric_alarm" "ec2_tmp_disk_utilization_alert_info" {
   metric_name         = "disk_used_percent"
   namespace           = "CWAgent"
   period              = "120"
-  statistic           = "Average"
-  threshold           = "85"
+  statistic           = "Maximum"
+  threshold           = "80"
   alarm_description   = "This metric monitors EC2 /tmp disk space utilization"
   alarm_actions       = [var.alarm_info_sns_topic_arn]
   unit                = "Percent"
