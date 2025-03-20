@@ -72,7 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_info" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "5"
   datapoints_to_alarm = "4"
-  treat_missing_data  = "missing"
+  treat_missing_data  = "ignore"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
   period              = "120"
@@ -96,7 +96,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_warning" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "15"
   datapoints_to_alarm = "12"
-  treat_missing_data  = "breaching"
+  treat_missing_data  = "ignore"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
   period              = "120"
@@ -110,5 +110,97 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_warning" {
       aws_instance.this[0].id,
       aws_instance.ignore_ami[0].id,
     )
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ec2_memory_utilization_alert_info" {
+  alarm_name          = "${var.name}_high_memory_alert"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "5"
+  datapoints_to_alarm = "4"
+  treat_missing_data  = "ignore"
+  metric_name         = "MemoryUtilization"
+  namespace           = "CWAgent"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "85"
+  alarm_description   = "This metric monitors EC2 memory utilization"
+  alarm_actions       = [var.alarm_info_sns_topic_arn]
+  unit                = "Percent"
+  dimensions = {
+    InstanceId = try(
+      aws_instance.this[0].id,
+      aws_instance.ignore_ami[0].id
+    )
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ec2_memory_utilization_alert_warning" {
+  alarm_name          = "${var.name}_critical_memory_alert"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "15"
+  datapoints_to_alarm = "12"
+  treat_missing_data  = "ignore"
+  metric_name         = "MemoryUtilization"
+  namespace           = "CWAgent"
+  period              = "120"
+  statistic           = "Maximum"
+  threshold           = "95"
+  alarm_description   = "This metric monitors EC2 memory utilization"
+  alarm_actions       = [var.alarm_sns_topic_arn]
+  unit                = "Percent"
+  dimensions = {
+    InstanceId = try(
+      aws_instance.this[0].id,
+      aws_instance.ignore_ami[0].id,
+    )
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_info" {
+  alarm_name          = "${var.name}_high_disk_alert"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "5"
+  datapoints_to_alarm = "4"
+  treat_missing_data  = "ignore"
+  metric_name         = "DiskSpaceUtilization"
+  namespace           = "CWAgent"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "85"
+  alarm_description   = "This metric monitors EC2 disk space utilization"
+  alarm_actions       = [var.alarm_info_sns_topic_arn]
+  unit                = "Percent"
+  dimensions = {
+    InstanceId = try(
+      aws_instance.this[0].id,
+      aws_instance.ignore_ami[0].id,
+    )
+    MountPath  = "/"
+    Filesystem = "ext4"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_warning" {
+  alarm_name          = "${var.name}_critical_disk_alert"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "15"
+  datapoints_to_alarm = "12"
+  treat_missing_data  = "ignore"
+  metric_name         = "DiskSpaceUtilization"
+  namespace           = "CWAgent"
+  period              = "120"
+  statistic           = "Maximum"
+  threshold           = "95"
+  alarm_description   = "This metric monitors EC2 disk space utilization"
+  alarm_actions       = [var.alarm_sns_topic_arn]
+  unit                = "Percent"
+  dimensions = {
+    InstanceId = try(
+      aws_instance.this[0].id,
+      aws_instance.ignore_ami[0].id,
+    )
+    MountPath  = "/"
+    Filesystem = "ext4"
   }
 }
