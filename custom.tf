@@ -68,7 +68,7 @@ variable "owner_team" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_info" {
-  alarm_name          = "${var.name}_high_cpu_alert"
+  alarm_name          = "${var.name}_high_cpu_alert_85_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "5"
   datapoints_to_alarm = "4"
@@ -92,7 +92,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_info" {
 
 
 resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_warning" {
-  alarm_name          = "${var.name}_critical_cpu_alert"
+  alarm_name          = "${var.name}_critical_cpu_alert_95_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "15"
   datapoints_to_alarm = "12"
@@ -114,7 +114,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_warning" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2_memory_utilization_alert_info" {
-  alarm_name          = "${var.name}_high_memory_alert"
+  alarm_name          = "${var.name}_high_memory_alert_85_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "5"
   datapoints_to_alarm = "4"
@@ -136,7 +136,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_memory_utilization_alert_info" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2_memory_utilization_alert_warning" {
-  alarm_name          = "${var.name}_critical_memory_alert"
+  alarm_name          = "${var.name}_critical_memory_alert_95_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "15"
   datapoints_to_alarm = "12"
@@ -158,7 +158,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_memory_utilization_alert_warning" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_info" {
-  alarm_name          = "${var.name}_high_disk_alert"
+  alarm_name          = "${var.name}_high_disk_alert_80_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "3"
   datapoints_to_alarm = "1"
@@ -180,7 +180,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_info" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_warning" {
-  alarm_name          = "${var.name}_critical_disk_alert"
+  alarm_name          = "${var.name}_critical_disk_alert_95_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "3"
   datapoints_to_alarm = "1"
@@ -202,7 +202,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_disk_utilization_alert_warning" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2_tmp_disk_utilization_alert_info" {
-  alarm_name          = "${var.name}_high_tmp_disk_alert"
+  alarm_name          = "${var.name}_high_tmp_disk_alert_80_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "3"
   datapoints_to_alarm = "1"
@@ -226,7 +226,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_tmp_disk_utilization_alert_info" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2_tmp_disk_utilization_alert_warning" {
-  alarm_name          = "${var.name}_critical_tmp_disk_alert"
+  alarm_name          = "${var.name}_critical_tmp_disk_alert_95_percent"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "3"
   datapoints_to_alarm = "1"
