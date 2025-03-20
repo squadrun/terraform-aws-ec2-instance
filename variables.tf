@@ -160,7 +160,8 @@ variable "metadata_options" {
   default = {
     "http_endpoint"               = "enabled"
     "http_put_response_hop_limit" = 1
-    "http_tokens"                 = "optional"
+    "http_tokens"                 = "required"
+    "instance_metadata_tags"      = "disabled"
   }
 }
 
@@ -351,11 +352,7 @@ variable "disable_api_stop" {
   default     = null
 
 }
-variable "putin_khuylo" {
-  description = "Do you agree that Putin doesn't respect Ukrainian sovereignty and territorial integrity? More info: https://en.wikipedia.org/wiki/Putin_khuylo!"
-  type        = bool
-  default     = true
-}
+
 
 ################################################################################
 # IAM Role / Instance Profile

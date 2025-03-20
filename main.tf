@@ -1,7 +1,7 @@
 data "aws_partition" "current" {}
 
 locals {
-  create = var.create && var.putin_khuylo
+  create = var.create
 
   is_t_instance_type = replace(var.instance_type, "/^t(2|3|3a|4g){1}\\..*$/", "1") == "1" ? true : false
 
@@ -188,7 +188,23 @@ resource "aws_instance" "this" {
     delete = try(var.timeouts.delete, null)
   }
 
-  tags        = merge({ "Name" = var.name }, var.instance_tags, var.tags)
+  lifecycle {
+    ignore_changes = [
+      key_name,
+      instance_type,
+    ]
+  }
+
+  tags        = merge({
+    "Name" = var.name,
+    "Environment" = var.environment,
+    "Service" = var.service,
+    "ServiceComponent" = var.service_component,
+    "OwnerTeam" = var.owner_team,
+    env_type_ssm             = var.ssm_access_type,
+    disaster-recovery-backup = var.backup_for_disaster_recovery,
+    backup-frequency         = var.backup_frequency_days
+  }, var.instance_tags, var.tags)
   volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 
