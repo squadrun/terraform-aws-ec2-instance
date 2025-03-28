@@ -13,8 +13,8 @@ variable "environment" {
   description = "The environment tag to apply to all resources. eg: production, testing, staging, etc"
 
   validation {
-    condition     = var.environment == null || can(regex("^(production|testing|staging|development)$", var.environment))
-    error_message = "environment must be lowercase alphanumeric with hyphens only."
+    condition     = var.environment == null || can(regex("^(production|not-production|testing|staging|development)$", var.environment))
+    error_message = "environment must be amongst production, not-production, testing, staging, development."
   }
 }
 
@@ -67,19 +67,20 @@ variable "owner_team" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_info" {
-  alarm_name          = "${var.name}_high_cpu_alert"
+
+resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_warning" {
+  alarm_name          = "${var.name}_critical_cpu_alert"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "5"
-  datapoints_to_alarm = "4"
+  evaluation_periods  = "15"
+  datapoints_to_alarm = "12"
   treat_missing_data  = "missing"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
   period              = "120"
-  statistic           = "Average"
-  threshold           = "85"
+  statistic           = "Maximum"
+  threshold           = "95"
   alarm_description   = "This metric monitors ec2 CPU Utilization"
-  alarm_actions       = [var.alarm_info_sns_topic_arn]
+  alarm_actions = [var.alarm_sns_topic_arn]
   unit                = "Percent"
   dimensions = {
     InstanceId = try(
@@ -89,20 +90,18 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_info" {
   }
 }
 
-
-
-resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_warning" {
-  alarm_name          = "${var.name}_critical_cpu_alert"
+resource "aws_cloudwatch_metric_alarm" "high_ram_usage" {
+  alarm_name          = "${var.name}_high_ram_usage"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "15"
-  datapoints_to_alarm = "12"
+  evaluation_periods  = "5"
+  datapoints_to_alarm = "4"
   treat_missing_data  = "breaching"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "120"
+  metric_name         = "mem_used_percent"
+  namespace           = "CWAgent"
+  period              = "60"
   statistic           = "Maximum"
-  threshold           = "95"
-  alarm_description   = "This metric monitors ec2 CPU Utilization"
+  threshold           = "90"
+  alarm_description   = "RAM usage is greater than 90% in ${var.name}"
   alarm_actions = [var.alarm_sns_topic_arn]
   unit                = "Percent"
   dimensions = {
