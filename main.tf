@@ -201,6 +201,8 @@ resource "aws_instance" "this" {
     "Service" = var.service,
     "ServiceComponent" = var.service_component,
     "OwnerTeam" = var.owner_team,
+    "ResourceType" = var.resource_type,
+    "Tenant" = var.tenant,
     env_type_ssm             = var.ssm_access_type,
     disaster-recovery-backup = var.backup_for_disaster_recovery,
     backup-frequency         = var.backup_frequency_days
@@ -382,7 +384,18 @@ resource "aws_instance" "ignore_ami" {
     delete = try(var.timeouts.delete, null)
   }
 
-  tags        = merge({ "Name" = var.name }, var.instance_tags, var.tags)
+  tags        = merge({
+    "Name" = var.name,
+    "Environment" = var.environment,
+    "Service" = var.service,
+    "ServiceComponent" = var.service_component,
+    "OwnerTeam" = var.owner_team,
+    "ResourceType" = var.resource_type,
+    "Tenant" = var.tenant,
+    env_type_ssm             = var.ssm_access_type,
+    disaster-recovery-backup = var.backup_for_disaster_recovery,
+    backup-frequency         = var.backup_frequency_days
+  }, var.instance_tags, var.tags)
   volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 
   lifecycle {
@@ -556,7 +569,18 @@ resource "aws_spot_instance_request" "this" {
     delete = try(var.timeouts.delete, null)
   }
 
-  tags        = merge({ "Name" = var.name }, var.instance_tags, var.tags)
+  tags        = merge({
+    "Name" = var.name,
+    "Environment" = var.environment,
+    "Service" = var.service,
+    "ServiceComponent" = var.service_component,
+    "OwnerTeam" = var.owner_team,
+    "ResourceType" = var.resource_type,
+    "Tenant" = var.tenant,
+    env_type_ssm             = var.ssm_access_type,
+    disaster-recovery-backup = var.backup_for_disaster_recovery,
+    backup-frequency         = var.backup_frequency_days
+  }, var.instance_tags, var.tags)
   volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 

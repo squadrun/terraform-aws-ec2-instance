@@ -28,6 +28,21 @@ variable "service" {
   }
 }
 
+variable "resource_type" {
+  type        = string
+  description = "Lifecycle classification of this instance: 'flexible' (can be stopped/replaced) or 'static' (persistent, always-on)"
+
+  validation {
+    condition     = can(regex("^(flexible|static)$", var.resource_type))
+    error_message = "resource_type must be either 'flexible' or 'static'."
+  }
+}
+
+variable "tenant" {
+  type        = string
+  description = "Tenant this instance belongs to. eg: squadstack, client-name, shared, etc"
+}
+
 variable "service_component" {
   type = string
   default = null
@@ -58,7 +73,8 @@ variable "ssm_access_type" {
 }
 
 variable "owner_team" {
-  type = string
+  type    = string
+  default = null
   description = "Owner of this ec2. eg: platform, supply, demand, ds, etc"
 
   validation {
