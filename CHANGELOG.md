@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.2](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/compare/v6.0.1...v6.0.2) (2025-07-01)
+
+
+### Bug Fixes
+
+* Set default value for `root_block_device.tags` to `null` ([#444](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/issues/444)) ([f1b5273](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/commit/f1b527329b2a9c55beb5b49fc146588d9611b637))
+
+## [6.0.1](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/compare/v6.0.0...v6.0.1) (2025-06-25)
+
+
+### Bug Fixes
+
+* Lower minimum Terraform version to 1.5.7 ([#441](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/issues/441)) ([abce6d9](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/commit/abce6d9d505b08d09f578ec65794d5b51eb1e78d))
+
+## [6.0.0](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/compare/v5.8.0...v6.0.0) (2025-06-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade AWS provider and min required Terraform version to `6.0` and `1.10` respectively (#436)
+
+### Features
+
+* Upgrade AWS provider and min required Terraform version to `6.0` and `1.10` respectively ([#436](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/issues/436)) ([bfd5ed3](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/commit/bfd5ed33d66024a76f482d6fa2ca226ff9d8f615))
+
+## [5.8.0](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/compare/v5.7.1...v5.8.0) (2025-03-30)
+
+
+### Features
+
+* Disable IMDSv1 per AWS default behavior change ([#424](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/issues/424)) ([ce8ae23](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/commit/ce8ae23a15a2a58b491161f56fb20635cc2f2733))
+
 ## [5.7.1](https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/compare/v5.7.0...v5.7.1) (2024-10-11)
 
 
