@@ -208,15 +208,26 @@ resource "aws_instance" "this" {
     }
   }
 
-  secondary_private_ips       = var.secondary_private_ips
-  source_dest_check           = var.network_interface != null ? null : var.source_dest_check
-  subnet_id                   = var.subnet_id
-  tags                        = local.instance_tags
+  secondary_private_ips = var.secondary_private_ips
+  source_dest_check     = var.network_interface != null ? null : var.source_dest_check
+  subnet_id             = var.subnet_id
+  tags = merge({
+    "Name"                   = var.name,
+    "Environment"            = var.environment,
+    "Service"                = var.service,
+    "ServiceComponent"       = var.service_component,
+    "OwnerTeam"              = var.owner_team,
+    "ResourceType"           = var.resource_type,
+    "Tenant"                 = var.tenant,
+    env_type_ssm             = var.ssm_access_type,
+    disaster-recovery-backup = var.backup_for_disaster_recovery,
+    backup-frequency         = var.backup_frequency_days
+  }, var.instance_tags, var.tags)
   tenancy                     = var.tenancy
   user_data                   = var.user_data
   user_data_base64            = var.user_data_base64
   user_data_replace_on_change = var.user_data_replace_on_change
-  volume_tags                 = var.enable_volume_tags ? merge(var.tags, var.volume_tags, { "Name" = var.name }) : null
+  volume_tags                 = var.enable_volume_tags ? merge({ "Name" = var.name }, var.tags, var.volume_tags) : null
   vpc_security_group_ids      = var.network_interface == null ? local.vpc_security_group_ids : null
 
   timeouts {
@@ -232,19 +243,6 @@ resource "aws_instance" "this" {
     ]
   }
 
-  tags        = merge({
-    "Name" = var.name,
-    "Environment" = var.environment,
-    "Service" = var.service,
-    "ServiceComponent" = var.service_component,
-    "OwnerTeam" = var.owner_team,
-    "ResourceType" = var.resource_type,
-    "Tenant" = var.tenant,
-    env_type_ssm             = var.ssm_access_type,
-    disaster-recovery-backup = var.backup_for_disaster_recovery,
-    backup-frequency         = var.backup_frequency_days
-  }, var.instance_tags, var.tags)
-  volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 
 ################################################################################
@@ -419,15 +417,26 @@ resource "aws_instance" "ignore_ami" {
     }
   }
 
-  secondary_private_ips       = var.secondary_private_ips
-  source_dest_check           = var.network_interface != null ? null : var.source_dest_check
-  subnet_id                   = var.subnet_id
-  tags                        = local.instance_tags
+  secondary_private_ips = var.secondary_private_ips
+  source_dest_check     = var.network_interface != null ? null : var.source_dest_check
+  subnet_id             = var.subnet_id
+  tags = merge({
+    "Name"                   = var.name,
+    "Environment"            = var.environment,
+    "Service"                = var.service,
+    "ServiceComponent"       = var.service_component,
+    "OwnerTeam"              = var.owner_team,
+    "ResourceType"           = var.resource_type,
+    "Tenant"                 = var.tenant,
+    env_type_ssm             = var.ssm_access_type,
+    disaster-recovery-backup = var.backup_for_disaster_recovery,
+    backup-frequency         = var.backup_frequency_days
+  }, var.instance_tags, var.tags)
   tenancy                     = var.tenancy
   user_data                   = var.user_data
   user_data_base64            = var.user_data_base64
   user_data_replace_on_change = var.user_data_replace_on_change
-  volume_tags                 = var.enable_volume_tags ? merge(var.tags, var.volume_tags, { "Name" = var.name }) : null
+  volume_tags                 = var.enable_volume_tags ? merge({ "Name" = var.name }, var.tags, var.volume_tags) : null
   vpc_security_group_ids      = var.network_interface == null ? local.vpc_security_group_ids : null
 
   timeouts {
@@ -435,20 +444,6 @@ resource "aws_instance" "ignore_ami" {
     update = try(var.timeouts.update, null)
     delete = try(var.timeouts.delete, null)
   }
-
-  tags        = merge({
-    "Name" = var.name,
-    "Environment" = var.environment,
-    "Service" = var.service,
-    "ServiceComponent" = var.service_component,
-    "OwnerTeam" = var.owner_team,
-    "ResourceType" = var.resource_type,
-    "Tenant" = var.tenant,
-    env_type_ssm             = var.ssm_access_type,
-    disaster-recovery-backup = var.backup_for_disaster_recovery,
-    backup-frequency         = var.backup_frequency_days
-  }, var.instance_tags, var.tags)
-  volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 
   lifecycle {
     ignore_changes = [
@@ -620,35 +615,32 @@ resource "aws_spot_instance_request" "this" {
     }
   }
 
-  secondary_private_ips       = var.secondary_private_ips
-  source_dest_check           = var.network_interface != null ? null : var.source_dest_check
-  subnet_id                   = var.subnet_id
-  tags                        = local.instance_tags
+  secondary_private_ips = var.secondary_private_ips
+  source_dest_check     = var.network_interface != null ? null : var.source_dest_check
+  subnet_id             = var.subnet_id
+  tags = merge({
+    "Name"                   = var.name,
+    "Environment"            = var.environment,
+    "Service"                = var.service,
+    "ServiceComponent"       = var.service_component,
+    "OwnerTeam"              = var.owner_team,
+    "ResourceType"           = var.resource_type,
+    "Tenant"                 = var.tenant,
+    env_type_ssm             = var.ssm_access_type,
+    disaster-recovery-backup = var.backup_for_disaster_recovery,
+    backup-frequency         = var.backup_frequency_days
+  }, var.instance_tags, var.tags)
   tenancy                     = var.tenancy
   user_data                   = var.user_data
   user_data_base64            = var.user_data_base64
   user_data_replace_on_change = var.user_data_replace_on_change
-  volume_tags                 = var.enable_volume_tags ? merge(var.tags, var.volume_tags, { "Name" = var.name }) : null
+  volume_tags                 = var.enable_volume_tags ? merge({ "Name" = var.name }, var.tags, var.volume_tags) : null
   vpc_security_group_ids      = var.network_interface == null ? local.vpc_security_group_ids : null
 
   timeouts {
     create = try(var.timeouts.create, null)
     delete = try(var.timeouts.delete, null)
   }
-
-  tags        = merge({
-    "Name" = var.name,
-    "Environment" = var.environment,
-    "Service" = var.service,
-    "ServiceComponent" = var.service_component,
-    "OwnerTeam" = var.owner_team,
-    "ResourceType" = var.resource_type,
-    "Tenant" = var.tenant,
-    env_type_ssm             = var.ssm_access_type,
-    disaster-recovery-backup = var.backup_for_disaster_recovery,
-    backup-frequency         = var.backup_frequency_days
-  }, var.instance_tags, var.tags)
-  volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 
   lifecycle {
     ignore_changes = [
