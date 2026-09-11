@@ -1,15 +1,15 @@
 variable "alarm_info_sns_topic_arn" {
-  type = string
+  type        = string
   description = "The ARN of the SNS topic to notify when on info alerts"
 }
 
 variable "alarm_sns_topic_arn" {
-  type = string
+  type        = string
   description = "The ARN of the SNS topic to notify when on critical alerts"
 }
 
 variable "environment" {
-  type = string
+  type        = string
   description = "The environment tag to apply to all resources. eg: production, testing, staging, etc"
 
   validation {
@@ -19,7 +19,7 @@ variable "environment" {
 }
 
 variable "service" {
-  type = string
+  type        = string
   description = "Service hosted on this instance. eg: squadstack, metabase, grafana, etc"
 
   validation {
@@ -44,8 +44,8 @@ variable "tenant" {
 }
 
 variable "service_component" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "[optional] Service Group within a service. eg: app, api, celery, etc"
 
   validation {
@@ -73,8 +73,8 @@ variable "ssm_access_type" {
 }
 
 variable "owner_team" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
   description = "Owner of this ec2. eg: platform, supply, demand, ds, etc"
 
   validation {
@@ -96,7 +96,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpuutilization_alert_warning" {
   statistic           = "Maximum"
   threshold           = "95"
   alarm_description   = "This metric monitors ec2 CPU Utilization"
-  alarm_actions = [var.alarm_sns_topic_arn]
+  alarm_actions       = [var.alarm_sns_topic_arn]
   unit                = "Percent"
   dimensions = {
     InstanceId = try(
@@ -118,7 +118,7 @@ resource "aws_cloudwatch_metric_alarm" "high_ram_usage" {
   statistic           = "Maximum"
   threshold           = "90"
   alarm_description   = "RAM usage is greater than 90% in ${var.name}"
-  alarm_actions = [var.alarm_sns_topic_arn]
+  alarm_actions       = [var.alarm_sns_topic_arn]
   unit                = "Percent"
   dimensions = {
     InstanceId = try(
